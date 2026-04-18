@@ -1,7 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+#if (useMediatR)
     <PackageReference Include="MediatR" />
+#endif
+#if (useFluentValidation)
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+#endif
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Options" />
   </ItemGroup>

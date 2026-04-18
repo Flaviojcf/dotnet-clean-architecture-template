@@ -10,10 +10,10 @@ namespace Company.SampleService.Infrastructure.SqlServer.DependencyInjection;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddPersistenceInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddSqlServerInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<CleanApiDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
 
         services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<CleanApiDbContext>());

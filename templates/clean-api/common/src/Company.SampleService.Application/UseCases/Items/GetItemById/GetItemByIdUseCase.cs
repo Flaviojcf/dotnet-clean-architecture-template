@@ -1,5 +1,5 @@
 using Company.SampleService.Application.Abstractions.Messaging;
-using Company.SampleService.Domain.Exceptions;
+using Company.SampleService.Domain;
 using Company.SampleService.Domain.Items;
 using Company.SampleService.Messages;
 
@@ -14,13 +14,21 @@ public sealed class GetItemByIdUseCase : IQueryHandler<GetItemByIdRequest, GetIt
         _itemRepository = itemRepository;
     }
 
-    public async Task<GetItemByIdResponse> Handle(GetItemByIdRequest request, CancellationToken cancellationToken)
+#if (useMediatR)
+    public async Task<Result<GetItemByIdResponse>> Handle(GetItemByIdRequest request, CancellationToken cancellationToken)
+#else
+    public async Task<Result<GetItemByIdResponse>> Handle(GetItemByIdRequest query, CancellationToken cancellationToken)
+#endif
     {
+#if (useMediatR)
         var item = await _itemRepository.GetByIdAsync(request.Id, cancellationToken);
+#else
+        var item = await _itemRepository.GetByIdAsync(query.Id, cancellationToken);
+#endif
 
         if (item is null)
         {
-            throw new NotFoundException(ResourceMessages.ItemNotFound);
+            return Error.NotFound("Item.NotFound", ResourceMessages.ItemNotFound);
         }
 
         return new GetItemByIdResponse(item.Id, item.Name, item.Price, item.CreatedAt);

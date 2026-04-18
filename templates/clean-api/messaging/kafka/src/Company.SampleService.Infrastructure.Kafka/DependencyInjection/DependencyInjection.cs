@@ -8,7 +8,7 @@ namespace Company.SampleService.Infrastructure.Kafka.DependencyInjection;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddMessagingInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddKafkaInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<KafkaSettings>(configuration.GetSection(KafkaSettings.SectionName));
         services.AddSingleton<IMessagePublisher, KafkaMessagePublisher>();

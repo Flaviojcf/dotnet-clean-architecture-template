@@ -10,10 +10,10 @@ namespace Company.SampleService.Infrastructure.PostgreSql.DependencyInjection;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddPersistenceInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddPostgreSqlInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<CleanApiDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+            options.UseNpgsql(configuration.GetConnectionString("PostgreSql")));
 
         services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<CleanApiDbContext>());

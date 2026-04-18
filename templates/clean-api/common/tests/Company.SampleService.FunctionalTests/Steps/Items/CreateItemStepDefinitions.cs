@@ -22,7 +22,8 @@ public sealed class CreateItemStepDefinitions
     public async Task WhenEuExecutarOCasoDeUsoDeCriacao()
     {
         var sut = new CreateItemUseCase(new InMemoryItemRepository(), new FakeUnitOfWork(), new FakeMessagePublisher());
-        _response = await sut.Handle(_request, CancellationToken.None);
+        var result = await sut.Handle(_request, CancellationToken.None);
+        _response = result.Value;
     }
 
     [Then("o item deve ser criado com sucesso")]

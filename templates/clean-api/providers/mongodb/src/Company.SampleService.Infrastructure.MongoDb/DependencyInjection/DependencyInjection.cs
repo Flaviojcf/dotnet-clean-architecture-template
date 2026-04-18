@@ -13,7 +13,7 @@ namespace Company.SampleService.Infrastructure.MongoDb.DependencyInjection;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddPersistenceInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddMongoDbInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<MongoDbSettings>(configuration.GetSection(MongoDbSettings.SectionName));
 

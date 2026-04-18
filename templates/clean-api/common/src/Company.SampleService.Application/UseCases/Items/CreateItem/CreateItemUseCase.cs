@@ -1,6 +1,6 @@
 using Company.SampleService.Application.Abstractions.Messaging;
+using Company.SampleService.Domain;
 using Company.SampleService.Domain.Abstractions;
-using Company.SampleService.Domain.Exceptions;
 using Company.SampleService.Domain.Items;
 using Company.SampleService.Messages;
 
@@ -19,14 +19,33 @@ public sealed class CreateItemUseCase : ICommandHandler<CreateItemRequest, Creat
         _messagePublisher = messagePublisher;
     }
 
-    public async Task<CreateItemResponse> Handle(CreateItemRequest request, CancellationToken cancellationToken)
+#if (useMediatR)
+    public async Task<Result<CreateItemResponse>> Handle(CreateItemRequest request, CancellationToken cancellationToken)
+#else
+    public async Task<Result<CreateItemResponse>> Handle(CreateItemRequest command, CancellationToken cancellationToken)
+#endif
     {
+#if (useMediatR)
         if (await _itemRepository.ExistsByNameAsync(request.Name, cancellationToken))
+#else
+        if (await _itemRepository.ExistsByNameAsync(command.Name, cancellationToken))
+#endif
         {
-            throw new ConflictException(ResourceMessages.ItemAlreadyExists);
+            return Error.Conflict("Item.AlreadyExists", ResourceMessages.ItemAlreadyExists);
         }
 
-        var item = Item.Create(request.Name, request.Price);
+#if (useMediatR)
+        var itemResult = Item.Create(request.Name, request.Price);
+#else
+        var itemResult = Item.Create(command.Name, command.Price);
+#endif
+
+        if (itemResult.IsFailure)
+        {
+            return itemResult.Error;
+        }
+
+        var item = itemResult.Value;
 
         await _itemRepository.AddAsync(item, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

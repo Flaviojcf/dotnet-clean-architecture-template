@@ -1,3 +1,4 @@
+#if (useFluentValidation)
 using FluentValidation;
 
 namespace Company.SampleService.Application.UseCases.Items.CreateItem;
@@ -15,3 +16,4 @@ public sealed class CreateItemRequestValidator : AbstractValidator<CreateItemReq
             .GreaterThan(0);
     }
 }
+#endif

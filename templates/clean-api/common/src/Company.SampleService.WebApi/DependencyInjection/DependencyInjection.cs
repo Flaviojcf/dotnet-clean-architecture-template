@@ -1,12 +1,22 @@
+#if (useSwagger)
 using Asp.Versioning;
+#endif
 using Company.SampleService.WebApi.Middlewares;
+#if (useOpenTelemetry)
 using Company.SampleService.WebApi.Observability;
+#endif
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+#if (useSwagger)
 using Microsoft.OpenApi.Models;
+#endif
+#if (useOpenTelemetry)
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+#endif
+#if (useSerilog)
 using Serilog;
+#endif
 using System.Text.Json.Serialization;
 
 namespace Company.SampleService.WebApi.DependencyInjection;
@@ -19,6 +29,7 @@ public static class DependencyInjection
         services.AddControllers()
             .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
+#if (useSwagger)
         services.AddApiVersioning(options =>
         {
             options.DefaultApiVersion = new ApiVersion(1, 0);
@@ -40,10 +51,17 @@ public static class DependencyInjection
                 Version = "v1"
             });
         });
+#endif
 
         services.AddHealthChecks();
         services.AddRouting(options => options.LowercaseUrls = true);
+
+#if (useOpenTelemetry)
         services.AddObservability(configuration);
+#endif
+#if (useSerilog)
+        services.AddSerilogLogging();
+#endif
 
         return services;
     }
@@ -51,15 +69,20 @@ public static class DependencyInjection
     public static WebApplication UseWebApiPipeline(this WebApplication app)
     {
         app.UseMiddleware<GlobalExceptionMiddleware>();
+#if (useSwagger)
         app.UseSwagger();
         app.UseSwaggerUI();
+#endif
+#if (useAuth)
         app.UseAuthentication();
         app.UseAuthorization();
+#endif
         app.MapControllers();
         app.MapHealthChecks("/health", new HealthCheckOptions());
         return app;
     }
 
+#if (useOpenTelemetry)
     private static IServiceCollection AddObservability(this IServiceCollection services, IConfiguration configuration)
     {
         var options = new ObservabilityOptions();
@@ -79,6 +102,13 @@ public static class DependencyInjection
                 builder.AddRuntimeInstrumentation();
             });
 
+        return services;
+    }
+#endif
+
+#if (useSerilog)
+    private static IServiceCollection AddSerilogLogging(this IServiceCollection services)
+    {
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
             .Enrich.FromLogContext()
@@ -93,4 +123,5 @@ public static class DependencyInjection
 
         return services;
     }
+#endif
 }

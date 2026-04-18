@@ -1,112 +1,182 @@
 {
   "$schema": "http://json.schemastore.org/template",
-  "author": "OpenAI",
+  "author": "Flaviojcf",
   "classifications": [
     "Web",
     "API",
     "ASP.NET Core",
     "Clean Architecture"
   ],
-  "identity": "OpenAI.CleanArchitecture.ModularApi",
+  "identity": "Flaviojcf.CleanArchitecture.ModularApi",
   "name": "Modular Clean Architecture API",
   "shortName": "cleanarchapi",
   "sourceName": "Company.SampleService",
   "preferNameDirectory": true,
   "placeholderFilename": "-.-",
   "symbols": {
-    "database": {
+    "useSqlServer": {
       "type": "parameter",
-      "datatype": "choice",
-      "description": "Selects the persistence provider.",
-      "defaultValue": "sqlserver",
-      "choices": [
-        {
-          "choice": "sqlserver",
-          "description": "Uses Entity Framework Core with SQL Server."
-        },
-        {
-          "choice": "postgresql",
-          "description": "Uses Entity Framework Core with PostgreSQL."
-        },
-        {
-          "choice": "mongodb",
-          "description": "Uses MongoDB.Driver with a MongoDB repository implementation."
-        }
-      ]
+      "datatype": "bool",
+      "description": "Include SQL Server persistence infrastructure (EF Core).",
+      "defaultValue": "true"
     },
-    "messaging": {
+    "usePostgreSql": {
       "type": "parameter",
-      "datatype": "choice",
-      "description": "Selects the messaging integration.",
-      "defaultValue": "none",
-      "choices": [
-        {
-          "choice": "none",
-          "description": "No messaging infrastructure project is generated."
-        },
-        {
-          "choice": "kafka",
-          "description": "Generates Infrastructure.Kafka and Kafka services in docker-compose."
-        }
-      ]
+      "datatype": "bool",
+      "description": "Include PostgreSQL persistence infrastructure (EF Core).",
+      "defaultValue": "false"
+    },
+    "useMongoDB": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include MongoDB persistence infrastructure (MongoDB.Driver).",
+      "defaultValue": "false"
+    },
+    "useKafka": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include Kafka messaging infrastructure (Confluent.Kafka).",
+      "defaultValue": "false"
+    },
+    "useMediatR": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Use MediatR for CQRS dispatch. When false, use cases are injected directly into controllers.",
+      "defaultValue": "true"
+    },
+    "useFluentValidation": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include FluentValidation for request validation.",
+      "defaultValue": "true"
+    },
+    "useSerilog": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include Serilog for structured logging.",
+      "defaultValue": "true"
+    },
+    "useOpenTelemetry": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include OpenTelemetry for distributed tracing and metrics.",
+      "defaultValue": "true"
+    },
+    "useSwagger": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include Swagger/OpenAPI documentation (Swashbuckle + API versioning).",
+      "defaultValue": "true"
+    },
+    "useAuth": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include JWT authentication infrastructure (BCrypt, JwtBearer).",
+      "defaultValue": "true"
     }
   },
   "sources": [
     {
       "source": "./common",
-      "target": "./"
+      "target": "./",
+      "modifiers": [
+        {
+          "condition": "(!useAuth)",
+          "exclude": [
+            "src/Company.SampleService.Infrastructure.Auth/**",
+            "src/Company.SampleService.Application/Abstractions/Authentication/**",
+            "src/Company.SampleService.Application/Settings/JwtSettings.cs"
+          ]
+        }
+      ]
     },
     {
       "source": "./providers/sqlserver",
       "target": "./",
-      "condition": "(database == \"sqlserver\")"
+      "condition": "(useSqlServer)"
     },
     {
       "source": "./providers/postgresql",
       "target": "./",
-      "condition": "(database == \"postgresql\")"
+      "condition": "(usePostgreSql)"
     },
     {
       "source": "./providers/mongodb",
       "target": "./",
-      "condition": "(database == \"mongodb\")"
+      "condition": "(useMongoDB)"
     },
     {
       "source": "./messaging/kafka",
       "target": "./",
-      "condition": "(messaging == \"kafka\")"
-    },
-    {
-      "source": "./variants/sqlserver-none",
-      "target": "./",
-      "condition": "(database == \"sqlserver\" && messaging == \"none\")"
-    },
-    {
-      "source": "./variants/sqlserver-kafka",
-      "target": "./",
-      "condition": "(database == \"sqlserver\" && messaging == \"kafka\")"
-    },
-    {
-      "source": "./variants/postgresql-none",
-      "target": "./",
-      "condition": "(database == \"postgresql\" && messaging == \"none\")"
-    },
-    {
-      "source": "./variants/postgresql-kafka",
-      "target": "./",
-      "condition": "(database == \"postgresql\" && messaging == \"kafka\")"
-    },
-    {
-      "source": "./variants/mongodb-none",
-      "target": "./",
-      "condition": "(database == \"mongodb\" && messaging == \"none\")"
-    },
-    {
-      "source": "./variants/mongodb-kafka",
-      "target": "./",
-      "condition": "(database == \"mongodb\" && messaging == \"kafka\")"
+      "condition": "(useKafka)"
     }
   ],
+  "specialCustomOperations": {
+    "**/*.csproj": {
+      "operations": [
+        {
+          "type": "conditional",
+          "configuration": {
+            "if": [ "#if" ],
+            "else": [ "#else" ],
+            "elseif": [ "#elseif" ],
+            "endif": [ "#endif" ],
+            "trim": true,
+            "wholeLine": true,
+            "evaluator": "C++"
+          }
+        }
+      ]
+    },
+    "**/*.props": {
+      "operations": [
+        {
+          "type": "conditional",
+          "configuration": {
+            "if": [ "#if" ],
+            "else": [ "#else" ],
+            "elseif": [ "#elseif" ],
+            "endif": [ "#endif" ],
+            "trim": true,
+            "wholeLine": true,
+            "evaluator": "C++"
+          }
+        }
+      ]
+    },
+    "**/*.yml": {
+      "operations": [
+        {
+          "type": "conditional",
+          "configuration": {
+            "if": [ "#if" ],
+            "else": [ "#else" ],
+            "elseif": [ "#elseif" ],
+            "endif": [ "#endif" ],
+            "trim": true,
+            "wholeLine": true,
+            "evaluator": "C++"
+          }
+        }
+      ]
+    },
+    "**/*.sln": {
+      "operations": [
+        {
+          "type": "conditional",
+          "configuration": {
+            "if": [ "#if" ],
+            "else": [ "#else" ],
+            "elseif": [ "#elseif" ],
+            "endif": [ "#endif" ],
+            "trim": true,
+            "wholeLine": true,
+            "evaluator": "C++"
+          }
+        }
+      ]
+    }
+  },
   "primaryOutputs": [
     {
       "path": "Company.SampleService.sln"

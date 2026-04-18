@@ -1,4 +1,3 @@
-using Company.SampleService.Domain.Exceptions;
 using Company.SampleService.WebApi.Models;
 using System.Net;
 using System.Text.Json;
@@ -19,14 +18,6 @@ public sealed class GlobalExceptionMiddleware
         try
         {
             await _next(context);
-        }
-        catch (ConflictException exception)
-        {
-            await WriteResponse(context, HttpStatusCode.Conflict, exception.Message);
-        }
-        catch (NotFoundException exception)
-        {
-            await WriteResponse(context, HttpStatusCode.NotFound, exception.Message);
         }
         catch (Exception exception)
         {

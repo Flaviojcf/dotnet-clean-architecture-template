@@ -9,8 +9,10 @@ public sealed class ItemBuilder
 
     public Item Build(string? name = null, decimal? price = null)
     {
-        return Item.Create(
+        var result = Item.Create(
             name ?? _faker.Commerce.ProductName(),
             price ?? decimal.Parse(_faker.Commerce.Price(10, 500)));
+
+        return result.Value;
     }
 }

@@ -1,5 +1,3 @@
-using Company.SampleService.Domain.Exceptions;
-
 namespace Company.SampleService.Domain.Items;
 
 public sealed class Item
@@ -21,18 +19,18 @@ public sealed class Item
     public decimal Price { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public static Item Create(string name, decimal price)
+    public static Result<Item> Create(string name, decimal price)
     {
         var normalizedName = name?.Trim() ?? string.Empty;
 
         if (string.IsNullOrWhiteSpace(normalizedName))
         {
-            throw new DomainException("Item name is required.");
+            return Error.Validation("Item.NameRequired", "Item name is required.");
         }
 
         if (price <= 0)
         {
-            throw new DomainException("Item price must be greater than zero.");
+            return Error.Validation("Item.InvalidPrice", "Item price must be greater than zero.");
         }
 
         return new Item(Guid.NewGuid(), normalizedName, price, DateTime.UtcNow);

@@ -1,8 +1,9 @@
 using Company.SampleService.Application.UseCases.Items.GetItemById;
 using Company.SampleService.CommomTestsUtilities.Builders.Items;
 using Company.SampleService.CommomTestsUtilities.TestDoubles;
-using Company.SampleService.Domain.Exceptions;
+using Company.SampleService.Domain;
 using FluentAssertions;
+using Xunit;
 
 namespace Company.SampleService.UnitTests.Application.UseCases.Items.GetItemById;
 
@@ -16,19 +17,21 @@ public sealed class GetItemByIdUseCaseTests
         await repository.AddAsync(item, CancellationToken.None);
         var sut = new GetItemByIdUseCase(repository);
 
-        var response = await sut.Handle(new GetItemByIdRequest(item.Id), CancellationToken.None);
+        var result = await sut.Handle(new GetItemByIdRequest(item.Id), CancellationToken.None);
 
-        response.Id.Should().Be(item.Id);
-        response.Name.Should().Be(item.Name);
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Id.Should().Be(item.Id);
+        result.Value.Name.Should().Be(item.Name);
     }
 
     [Fact]
-    public async Task Given_UnknownItem_When_Handle_Then_ShouldThrowNotFoundException()
+    public async Task Given_UnknownItem_When_Handle_Then_ShouldReturnNotFoundError()
     {
         var sut = new GetItemByIdUseCase(new InMemoryItemRepository());
 
-        var action = async () => await sut.Handle(new GetItemByIdRequest(Guid.NewGuid()), CancellationToken.None);
+        var result = await sut.Handle(new GetItemByIdRequest(Guid.NewGuid()), CancellationToken.None);
 
-        await action.Should().ThrowAsync<NotFoundException>();
+        result.IsFailure.Should().BeTrue();
+        result.Error.Type.Should().Be(ErrorType.NotFound);
     }
 }
