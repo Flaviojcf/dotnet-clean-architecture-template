@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "OpenAI",
+  "classifications": [
+    "Web",
+    "API",
+    "ASP.NET Core",
+    "Clean Architecture"
+  ],
+  "identity": "OpenAI.CleanArchitecture.ModularApi",
+  "name": "Modular Clean Architecture API",
+  "shortName": "cleanarchapi",
+  "sourceName": "Company.SampleService",
+  "preferNameDirectory": true,
+  "placeholderFilename": "-.-",
+  "symbols": {
+    "database": {
+      "type": "parameter",
+      "datatype": "choice",
+      "description": "Selects the persistence provider.",
+      "defaultValue": "sqlserver",
+      "choices": [
+        {
+          "choice": "sqlserver",
+          "description": "Uses Entity Framework Core with SQL Server."
+        },
+        {
+          "choice": "postgresql",
+          "description": "Uses Entity Framework Core with PostgreSQL."
+        },
+        {
+          "choice": "mongodb",
+          "description": "Uses MongoDB.Driver with a MongoDB repository implementation."
+        }
+      ]
+    },
+    "messaging": {
+      "type": "parameter",
+      "datatype": "choice",
+      "description": "Selects the messaging integration.",
+      "defaultValue": "none",
+      "choices": [
+        {
+          "choice": "none",
+          "description": "No messaging infrastructure project is generated."
+        },
+        {
+          "choice": "kafka",
+          "description": "Generates Infrastructure.Kafka and Kafka services in docker-compose."
+        }
+      ]
+    }
+  },
+  "sources": [
+    {
+      "source": "./common",
+      "target": "./"
+    },
+    {
+      "source": "./providers/sqlserver",
+      "target": "./",
+      "condition": "(database == \"sqlserver\")"
+    },
+    {
+      "source": "./providers/postgresql",
+      "target": "./",
+      "condition": "(database == \"postgresql\")"
+    },
+    {
+      "source": "./providers/mongodb",
+      "target": "./",
+      "condition": "(database == \"mongodb\")"
+    },
+    {
+      "source": "./messaging/kafka",
+      "target": "./",
+      "condition": "(messaging == \"kafka\")"
+    },
+    {
+      "source": "./variants/sqlserver-none",
+      "target": "./",
+      "condition": "(database == \"sqlserver\" && messaging == \"none\")"
+    },
+    {
+      "source": "./variants/sqlserver-kafka",
+      "target": "./",
+      "condition": "(database == \"sqlserver\" && messaging == \"kafka\")"
+    },
+    {
+      "source": "./variants/postgresql-none",
+      "target": "./",
+      "condition": "(database == \"postgresql\" && messaging == \"none\")"
+    },
+    {
+      "source": "./variants/postgresql-kafka",
+      "target": "./",
+      "condition": "(database == \"postgresql\" && messaging == \"kafka\")"
+    },
+    {
+      "source": "./variants/mongodb-none",
+      "target": "./",
+      "condition": "(database == \"mongodb\" && messaging == \"none\")"
+    },
+    {
+      "source": "./variants/mongodb-kafka",
+      "target": "./",
+      "condition": "(database == \"mongodb\" && messaging == \"kafka\")"
+    }
+  ],
+  "primaryOutputs": [
+    {
+      "path": "Company.SampleService.sln"
+    },
+    {
+      "path": "src/Company.SampleService.WebApi/Company.SampleService.WebApi.csproj"
+    }
+  ]
+}

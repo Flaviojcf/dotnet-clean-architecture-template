@@ -1,0 +1,14 @@
+using Company.SampleService.Application.Abstractions.Messaging;
+
+namespace Company.SampleService.CommomTestsUtilities.TestDoubles;
+
+public sealed class FakeMessagePublisher : IMessagePublisher
+{
+    public List<object> PublishedMessages { get; } = new();
+
+    public Task PublishAsync<TMessage>(TMessage message, CancellationToken cancellationToken = default)
+    {
+        PublishedMessages.Add(message!);
+        return Task.CompletedTask;
+    }
+}
