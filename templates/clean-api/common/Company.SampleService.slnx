@@ -1,0 +1,29 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Company.SampleService.Application/Company.SampleService.Application.csproj" />
+    <Project Path="src/Company.SampleService.Domain/Company.SampleService.Domain.csproj" />
+#if (useAuth)
+    <Project Path="src/Company.SampleService.Infrastructure.Auth/Company.SampleService.Infrastructure.Auth.csproj" />
+#endif
+#if (useKafka)
+    <Project Path="src/Company.SampleService.Infrastructure.Kafka/Company.SampleService.Infrastructure.Kafka.csproj" />
+#endif
+#if (useMongoDB)
+    <Project Path="src/Company.SampleService.Infrastructure.MongoDb/Company.SampleService.Infrastructure.MongoDb.csproj" />
+#endif
+#if (usePostgreSql)
+    <Project Path="src/Company.SampleService.Infrastructure.PostgreSql/Company.SampleService.Infrastructure.PostgreSql.csproj" />
+#endif
+#if (useSqlServer)
+    <Project Path="src/Company.SampleService.Infrastructure.SqlServer/Company.SampleService.Infrastructure.SqlServer.csproj" />
+#endif
+    <Project Path="src/Company.SampleService.Messages/Company.SampleService.Messages.csproj" />
+    <Project Path="src/Company.SampleService.WebApi/Company.SampleService.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Company.SampleService.CommomTestsUtilities/Company.SampleService.CommomTestsUtilities.csproj" />
+    <Project Path="tests/Company.SampleService.FunctionalTests/Company.SampleService.FunctionalTests.csproj" />
+    <Project Path="tests/Company.SampleService.IntegratedTests/Company.SampleService.IntegratedTests.csproj" />
+    <Project Path="tests/Company.SampleService.UnitTests/Company.SampleService.UnitTests.csproj" />
+  </Folder>
+</Solution>

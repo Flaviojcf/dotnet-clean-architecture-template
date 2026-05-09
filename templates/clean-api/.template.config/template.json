@@ -160,7 +160,7 @@
         }
       ]
     },
-    "**/*.sln": {
+    "**/*.slnx": {
       "operations": [
         {
           "type": "conditional",
@@ -179,7 +179,7 @@
   },
   "primaryOutputs": [
     {
-      "path": "Company.SampleService.sln"
+      "path": "Company.SampleService.slnx"
     },
     {
       "path": "src/Company.SampleService.WebApi/Company.SampleService.WebApi.csproj"
