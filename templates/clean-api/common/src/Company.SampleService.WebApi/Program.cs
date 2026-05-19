@@ -1,4 +1,5 @@
 using Company.SampleService.Application.DependencyInjection;
+using Company.SampleService.Infrastructure.Http.DependencyInjection;
 using Company.SampleService.WebApi.DependencyInjection;
 #if (useAuth)
 using Company.SampleService.Infrastructure.Auth.DependencyInjection;
@@ -26,6 +27,7 @@ public class Program
 
         builder.Services.AddWebApi(builder.Configuration);
         builder.Services.AddApplication();
+        builder.Services.AddHttpInfrastructure(builder.Configuration);
 #if (useSqlServer)
         builder.Services.AddSqlServerInfrastructure(builder.Configuration);
 #endif

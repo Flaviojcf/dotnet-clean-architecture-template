@@ -8,6 +8,7 @@
 #if (useKafka)
     <Project Path="src/Company.SampleService.Infrastructure.Kafka/Company.SampleService.Infrastructure.Kafka.csproj" />
 #endif
+    <Project Path="src/Company.SampleService.Infrastructure.Http/Company.SampleService.Infrastructure.Http.csproj" />
 #if (useMongoDB)
     <Project Path="src/Company.SampleService.Infrastructure.MongoDb/Company.SampleService.Infrastructure.MongoDb.csproj" />
 #endif
