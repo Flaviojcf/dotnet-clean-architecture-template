@@ -1,4 +1,3 @@
-using Company.SampleService.Application.Abstractions.Messaging;
 using Company.SampleService.Application.UseCases.Items.CreateItem;
 using Company.SampleService.Application.UseCases.Items.GetItemById;
 using Company.SampleService.WebApi.Extensions;
@@ -16,29 +15,23 @@ public sealed class ItemsController : BaseApiController
     public ItemsController(IMediator mediator) : base(mediator)
     {
     }
-#else
-    private readonly ICommandHandler<CreateItemRequest, CreateItemResponse> _createItem;
-    private readonly IQueryHandler<GetItemByIdRequest, GetItemByIdResponse> _getItemById;
-
-    public ItemsController(
-        ICommandHandler<CreateItemRequest, CreateItemResponse> createItem,
-        IQueryHandler<GetItemByIdRequest, GetItemByIdResponse> getItemById)
-    {
-        _createItem = createItem;
-        _getItemById = getItemById;
-    }
 #endif
 
     [HttpPost]
     [ProducesResponseType(typeof(ApiResponse<CreateItemResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create([FromBody] CreateItemRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create(
+        [FromBody] CreateItemRequest request,
+#if (!useMediatR)
+        [FromServices] ICreateItemUseCase createItem,
+#endif
+        CancellationToken cancellationToken)
     {
 #if (useMediatR)
         var result = await Mediator.Send(request, cancellationToken);
 #else
-        var result = await _createItem.Handle(request, cancellationToken);
+        var result = await createItem.Handle(request, cancellationToken);
 #endif
 
         if (result.IsFailure)
@@ -55,12 +48,17 @@ public sealed class ItemsController : BaseApiController
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(ApiResponse<GetItemByIdResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetById(
+        Guid id,
+#if (!useMediatR)
+        [FromServices] IGetItemByIdUseCase getItemById,
+#endif
+        CancellationToken cancellationToken)
     {
 #if (useMediatR)
         var result = await Mediator.Send(new GetItemByIdRequest(id), cancellationToken);
 #else
-        var result = await _getItemById.Handle(new GetItemByIdRequest(id), cancellationToken);
+        var result = await getItemById.Handle(new GetItemByIdRequest(id), cancellationToken);
 #endif
 
         if (result.IsFailure)

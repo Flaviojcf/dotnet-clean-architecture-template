@@ -6,7 +6,7 @@ using Company.SampleService.Messages;
 
 namespace Company.SampleService.Application.UseCases.Items.CreateItem;
 
-public sealed class CreateItemUseCase : ICommandHandler<CreateItemRequest, CreateItemResponse>
+public sealed class CreateItemUseCase : ICreateItemUseCase
 {
     private readonly IItemRepository _itemRepository;
     private readonly IUnitOfWork _unitOfWork;

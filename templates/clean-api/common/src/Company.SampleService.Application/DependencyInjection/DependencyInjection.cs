@@ -28,8 +28,8 @@ public static class DependencyInjection
 #endif
 #endif
 #if (!useMediatR)
-        services.AddScoped<ICommandHandler<CreateItemRequest, CreateItemResponse>, CreateItemUseCase>();
-        services.AddScoped<IQueryHandler<GetItemByIdRequest, GetItemByIdResponse>, GetItemByIdUseCase>();
+        services.AddScoped<ICreateItemUseCase, CreateItemUseCase>();
+        services.AddScoped<IGetItemByIdUseCase, GetItemByIdUseCase>();
 #endif
         services.AddScoped<IMessagePublisher, NullMessagePublisher>();
 

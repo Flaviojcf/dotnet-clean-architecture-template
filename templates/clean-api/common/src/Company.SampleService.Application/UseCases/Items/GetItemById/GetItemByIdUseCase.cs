@@ -5,7 +5,7 @@ using Company.SampleService.Messages;
 
 namespace Company.SampleService.Application.UseCases.Items.GetItemById;
 
-public sealed class GetItemByIdUseCase : IQueryHandler<GetItemByIdRequest, GetItemByIdResponse>
+public sealed class GetItemByIdUseCase : IGetItemByIdUseCase
 {
     private readonly IItemRepository _itemRepository;
 
