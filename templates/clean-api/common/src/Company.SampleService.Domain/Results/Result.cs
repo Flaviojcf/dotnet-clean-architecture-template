@@ -1,11 +1,11 @@
 namespace Company.SampleService.Domain;
 
-public readonly struct Result<T>
+public readonly struct Result<TValue>
 {
-    private readonly T? _value;
+    private readonly TValue? _value;
     private readonly Error? _error;
 
-    private Result(T value)
+    private Result(TValue value)
     {
         IsSuccess = true;
         _value = value;
@@ -22,7 +22,7 @@ public readonly struct Result<T>
     public bool IsSuccess { get; }
     public bool IsFailure => !IsSuccess;
 
-    public T Value => IsSuccess
+    public TValue Value => IsSuccess
         ? _value!
         : throw new InvalidOperationException("Cannot access Value of a failed Result.");
 
@@ -30,12 +30,12 @@ public readonly struct Result<T>
         ? _error!
         : throw new InvalidOperationException("Cannot access Error of a successful Result.");
 
-    public static Result<T> Success(T value) => new(value);
-    public static Result<T> Failure(Error error) => new(error);
+    public static Result<TValue> Success(TValue value) => new(value);
+    public static Result<TValue> Failure(Error error) => new(error);
 
-    public static implicit operator Result<T>(T value) => Success(value);
-    public static implicit operator Result<T>(Error error) => Failure(error);
+    public static implicit operator Result<TValue>(TValue value) => Success(value);
+    public static implicit operator Result<TValue>(Error error) => Failure(error);
 
-    public TOut Match<TOut>(Func<T, TOut> onSuccess, Func<Error, TOut> onFailure) =>
+    public TOutput Match<TOutput>(Func<TValue, TOutput> onSuccess, Func<Error, TOutput> onFailure) =>
         IsSuccess ? onSuccess(_value!) : onFailure(_error!);
 }
