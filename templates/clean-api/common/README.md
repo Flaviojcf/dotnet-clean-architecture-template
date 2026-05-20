@@ -55,26 +55,37 @@ All options are boolean flags. Pass `--<flag>` to enable or `--<flag> false` to 
 
 | Flag | Default | Description |
 |---|---|---|
-| `--use-sqlserver` | `true` | EF Core with SQL Server |
-| `--use-postgresql` | `false` | EF Core with PostgreSQL |
-| `--use-mongodb` | `false` | MongoDB.Driver |
+| `--useSqlServer` | `true` | EF Core with SQL Server |
+| `--usePostgreSql` | `false` | EF Core with PostgreSQL |
+| `--useMongoDB` | `false` | MongoDB.Driver |
 
 ### Messaging (multiple allowed)
 
 | Flag | Default | Description |
 |---|---|---|
-| `--use-kafka` | `false` | Confluent.Kafka message publisher |
+| `--useKafka` | `false` | Confluent.Kafka message publisher |
 
 ### Libraries
 
 | Flag | Default | Description |
 |---|---|---|
-| `--use-mediatr` | `true` | MediatR for CQRS dispatch. When disabled, use cases are injected directly into controllers |
-| `--use-fluentvalidation` | `true` | FluentValidation for request validation |
-| `--use-serilog` | `true` | Serilog for structured logging |
-| `--use-opentelemetry` | `true` | OpenTelemetry tracing and metrics |
-| `--use-swagger` | `true` | Swashbuckle + API versioning |
-| `--use-auth` | `true` | JWT Bearer authentication + BCrypt |
+| `--useMediatR` | `true` | MediatR for CQRS dispatch. When disabled, use cases are injected directly into controllers |
+| `--useFluentValidation` | `true` | FluentValidation for request validation |
+| `--useSerilog` | `true` | Serilog for structured logging |
+| `--useOpenTelemetry` | `true` | OpenTelemetry tracing and metrics |
+| `--useSwagger` | `true` | Swashbuckle + API versioning |
+| `--useAuth` | `true` | JWT Bearer authentication + BCrypt |
+| `--useCiCd` | `true` | GitHub Actions wrappers for `fcg-pipelines` reusable CI/CD workflows |
+
+### CI/CD naming
+
+When CI/CD is enabled, pass `--serviceSlug` to define the service name used by workflows,
+container image names, Kubernetes resource names, and the SonarCloud project key.
+
+```bash
+dotnet new cleanarchapi -n Fcg.Identity \
+  --serviceSlug fcg-identity
+```
 
 ---
 
@@ -90,40 +101,40 @@ dotnet new cleanarchapi -n MyCompany.MyService
 
 ```bash
 dotnet new cleanarchapi -n MyCompany.MyService \
-  --use-sqlserver false \
-  --use-postgresql
+  --useSqlServer false \
+  --usePostgreSql
 ```
 
 ### Multiple databases — SQL Server + MongoDB
 
 ```bash
 dotnet new cleanarchapi -n MyCompany.MyService \
-  --use-mongodb
+  --useMongoDB
 ```
 
 ### PostgreSQL + Kafka
 
 ```bash
 dotnet new cleanarchapi -n MyCompany.MyService \
-  --use-sqlserver false \
-  --use-postgresql \
-  --use-kafka
+  --useSqlServer false \
+  --usePostgreSql \
+  --useKafka
 ```
 
 ### All databases + Kafka
 
 ```bash
 dotnet new cleanarchapi -n MyCompany.MyService \
-  --use-postgresql \
-  --use-mongodb \
-  --use-kafka
+  --usePostgreSql \
+  --useMongoDB \
+  --useKafka
 ```
 
 ### Without MediatR (direct use case injection)
 
 ```bash
 dotnet new cleanarchapi -n MyCompany.MyService \
-  --use-mediatr false
+  --useMediatR false
 ```
 
 Controllers will inject use cases directly:
@@ -138,28 +149,35 @@ public ItemsController(
 
 ```bash
 dotnet new cleanarchapi -n MyCompany.MyService \
-  --use-auth false
+  --useAuth false
+```
+
+### Without CI/CD workflows
+
+```bash
+dotnet new cleanarchapi -n MyCompany.MyService \
+  --useCiCd false
 ```
 
 ### Minimal setup — no observability, no swagger, no auth
 
 ```bash
 dotnet new cleanarchapi -n MyCompany.MyService \
-  --use-auth false \
-  --use-swagger false \
-  --use-serilog false \
-  --use-opentelemetry false
+  --useAuth false \
+  --useSwagger false \
+  --useSerilog false \
+  --useOpenTelemetry false
 ```
 
 ### Full example — MongoDB + Kafka, no MediatR, no auth
 
 ```bash
 dotnet new cleanarchapi -n MyCompany.MyService \
-  --use-sqlserver false \
-  --use-mongodb \
-  --use-kafka \
-  --use-mediatr false \
-  --use-auth false
+  --useSqlServer false \
+  --useMongoDB \
+  --useKafka \
+  --useMediatR false \
+  --useAuth false
 ```
 
 ---
@@ -188,11 +206,11 @@ src/
   Company.SampleService.Domain/
   Company.SampleService.Application/
   Company.SampleService.Messages/
-  Company.SampleService.Infrastructure.Auth/       # present if --use-auth
-  Company.SampleService.Infrastructure.SqlServer/  # present if --use-sqlserver
-  Company.SampleService.Infrastructure.PostgreSql/ # present if --use-postgresql
-  Company.SampleService.Infrastructure.MongoDb/    # present if --use-mongodb
-  Company.SampleService.Infrastructure.Kafka/      # present if --use-kafka
+  Company.SampleService.Infrastructure.Auth/       # present if --useAuth
+  Company.SampleService.Infrastructure.SqlServer/  # present if --useSqlServer
+  Company.SampleService.Infrastructure.PostgreSql/ # present if --usePostgreSql
+  Company.SampleService.Infrastructure.MongoDb/    # present if --useMongoDB
+  Company.SampleService.Infrastructure.Kafka/      # present if --useKafka
   Company.SampleService.WebApi/
 tests/
   Company.SampleService.CommomTestsUtilities/

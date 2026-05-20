@@ -73,6 +73,19 @@
       "datatype": "bool",
       "description": "Include JWT authentication infrastructure (BCrypt, JwtBearer).",
       "defaultValue": "true"
+    },
+    "useCiCd": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include GitHub Actions wrappers for the fcg-pipelines reusable CI/CD workflows.",
+      "defaultValue": "true"
+    },
+    "serviceSlug": {
+      "type": "parameter",
+      "datatype": "text",
+      "description": "Kebab-case service name used by CI/CD, container images, and Kubernetes resources.",
+      "defaultValue": "company-sample-service",
+      "replaces": "company-sample-service"
     }
   },
   "sources": [
@@ -86,6 +99,12 @@
             "src/Company.SampleService.Infrastructure.Auth/**",
             "src/Company.SampleService.Application/Abstractions/Authentication/**",
             "src/Company.SampleService.Application/Settings/JwtSettings.cs"
+          ]
+        },
+        {
+          "condition": "(!useCiCd)",
+          "exclude": [
+            ".github/**"
           ]
         }
       ]
