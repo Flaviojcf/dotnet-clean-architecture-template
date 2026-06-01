@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Flaviojcf",
+  "classifications": [
+    "Worker",
+    "VSA",
+    "Vertical Slice Architecture",
+    "Kafka"
+  ],
+  "identity": "Flaviojcf.Vsa.Worker",
+  "name": "VSA Worker",
+  "shortName": "vsa-worker",
+  "sourceName": "Company.SampleService",
+  "preferNameDirectory": true,
+  "symbols": {
+    "useKafka": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include a Kafka consumer sample with Confluent.Kafka.",
+      "defaultValue": "true"
+    },
+    "useSerilog": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include Serilog for structured logging.",
+      "defaultValue": "true"
+    },
+    "useCiCd": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include GitHub Actions wrappers for the fcg-pipelines reusable CI/CD workflows.",
+      "defaultValue": "true"
+    },
+    "serviceSlug": {
+      "type": "parameter",
+      "datatype": "text",
+      "description": "Kebab-case service name used by CI/CD, container images, and Docker Compose resources.",
+      "defaultValue": "company-sample-service",
+      "replaces": "company-sample-service"
+    }
+  },
+  "sources": [
+    {
+      "source": "./common",
+      "target": "./",
+      "modifiers": [
+        {
+          "condition": "(!useKafka)",
+          "exclude": [
+            "src/Company.SampleService.Application/Common/Abstractions/BaseKafkaConsumer.cs",
+            "src/Company.SampleService.Application/Common/Settings/KafkaSettings.cs",
+            "src/Company.SampleService.Application/Features/SampleEvent/SampleEvent.cs",
+            "src/Company.SampleService.Application/Features/SampleEvent/SampleEventConsumer.cs"
+          ]
+        },
+        {
+          "condition": "(!useCiCd)",
+          "exclude": [
+            ".github/**"
+          ]
+        }
+      ]
+    }
+  ],
+  "specialCustomOperations": {
+    "**/*.csproj": {
+      "operations": [
+        {
+          "type": "conditional",
+          "configuration": {
+            "if": [ "#if" ],
+            "else": [ "#else" ],
+            "elseif": [ "#elseif" ],
+            "endif": [ "#endif" ],
+            "trim": true,
+            "wholeLine": true,
+            "evaluator": "C++"
+          }
+        }
+      ]
+    },
+    "**/*.props": {
+      "operations": [
+        {
+          "type": "conditional",
+          "configuration": {
+            "if": [ "#if" ],
+            "else": [ "#else" ],
+            "elseif": [ "#elseif" ],
+            "endif": [ "#endif" ],
+            "trim": true,
+            "wholeLine": true,
+            "evaluator": "C++"
+          }
+        }
+      ]
+    },
+    "**/*.yml": {
+      "operations": [
+        {
+          "type": "conditional",
+          "configuration": {
+            "if": [ "#if" ],
+            "else": [ "#else" ],
+            "elseif": [ "#elseif" ],
+            "endif": [ "#endif" ],
+            "trim": true,
+            "wholeLine": true,
+            "evaluator": "C++"
+          }
+        }
+      ]
+    },
+    "**/*.json": {
+      "operations": [
+        {
+          "type": "conditional",
+          "configuration": {
+            "if": [ "#if" ],
+            "else": [ "#else" ],
+            "elseif": [ "#elseif" ],
+            "endif": [ "#endif" ],
+            "trim": true,
+            "wholeLine": true,
+            "evaluator": "C++"
+          }
+        }
+      ]
+    },
+    "**/*.slnx": {
+      "operations": [
+        {
+          "type": "conditional",
+          "configuration": {
+            "if": [ "#if" ],
+            "else": [ "#else" ],
+            "elseif": [ "#elseif" ],
+            "endif": [ "#endif" ],
+            "trim": true,
+            "wholeLine": true,
+            "evaluator": "C++"
+          }
+        }
+      ]
+    }
+  },
+  "primaryOutputs": [
+    {
+      "path": "Company.SampleService.slnx"
+    },
+    {
+      "path": "src/Company.SampleService.Worker/Company.SampleService.Worker.csproj"
+    }
+  ]
+}
