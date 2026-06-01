@@ -1,31 +1,49 @@
-# Modular Clean Architecture API Template
+# Modular .NET Architecture Templates
 
-This folder contains a `dotnet new` template pack that generates a Clean Architecture API solution with:
+This repository contains a `dotnet new` template pack.
+
+Available templates:
+
+- `cleanarchapi`: Clean Architecture API solution.
+- `vsa-worker`: Vertical Slice Architecture worker.
+
+The API template generates:
 
 - `Domain`, `Application`, `Messages`, `Infrastructure.Auth`, and `WebApi`
-- one persistence project chosen at generation time: `SqlServer`, `PostgreSql`, or `MongoDb`
+- optional persistence projects: `SqlServer`, `PostgreSql`, or `MongoDb`
 - optional `Infrastructure.Kafka`
 - `CommomTestsUtilities`, `UnitTests`, `IntegratedTests`, and `FunctionalTests`
 
 ## Install locally
 
 ```powershell
-dotnet new install C:\dev\study\fiap\dotnet-clean-architecture-template\templates\clean-api
+dotnet new install . --force
 ```
 
 ## Generate a project
 
+Clean Architecture API:
+
 ```powershell
-dotnet new cleanarchapi -n MinhaEmpresa.Orders --database sqlserver --messaging kafka
+dotnet new cleanarchapi -n MinhaEmpresa.Orders
+```
+
+VSA worker:
+
+```powershell
+dotnet new vsa-worker -n MinhaEmpresa.Notifications
 ```
 
 Options:
 
-- `--database`: `sqlserver`, `postgresql`, `mongodb`
-- `--messaging`: `kafka`, `none`
+- `--useSqlServer`: include SQL Server persistence, default `true`
+- `--usePostgreSql`: include PostgreSQL persistence, default `false`
+- `--useMongoDB`: include MongoDB persistence, default `false`
+- `--useKafka`: include Kafka messaging, default `false`
+- `--useCiCd`: include CI/CD workflows, default `true`
 
 ## Pack as NuGet template
 
 ```powershell
-dotnet pack C:\dev\study\fiap\dotnet-clean-architecture-template\DotnetCleanArchitecture.TemplatePack.csproj
+dotnet pack .\DotnetCleanArchitecture.TemplatePack.csproj
 ```
