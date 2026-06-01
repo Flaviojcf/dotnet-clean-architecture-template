@@ -3,18 +3,31 @@ using Company.SampleService.Application.DependencyInjection;
 using Serilog;
 #endif
 
-var builder = Host.CreateApplicationBuilder(args);
+namespace Company.SampleService.Worker;
 
+public class Program
+{
+    protected Program() { }
+
+    public static void Main(string[] args)
+    {
+        CreateHostBuilder(args).Build().Run();
+    }
+
+    public static IHostBuilder CreateHostBuilder(string[] args)
+    {
+        return Host.CreateDefaultBuilder(args)
+            .ConfigureServices((hostContext, services) =>
+            {
+                services.AddApplication(hostContext.Configuration);
 #if (useSerilog)
-builder.Services.AddSerilog((serviceProvider, loggerConfiguration) => loggerConfiguration
-    .ReadFrom.Configuration(builder.Configuration)
-    .ReadFrom.Services(serviceProvider)
-    .Enrich.FromLogContext()
-    .WriteTo.Console());
+
+                services.AddSerilog((serviceProvider, loggerConfiguration) => loggerConfiguration
+                    .ReadFrom.Configuration(hostContext.Configuration)
+                    .ReadFrom.Services(serviceProvider)
+                    .Enrich.FromLogContext()
+                    .WriteTo.Console());
 #endif
-
-builder.Services.AddApplication(builder.Configuration);
-
-var host = builder.Build();
-
-await host.RunAsync();
+            });
+    }
+}
