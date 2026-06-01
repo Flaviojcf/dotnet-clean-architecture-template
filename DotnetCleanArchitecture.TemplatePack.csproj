@@ -3,10 +3,10 @@
     <PackageType>Template</PackageType>
     <PackageVersion>1.0.0</PackageVersion>
     <PackageId>DotnetCleanArchitecture.TemplatePack</PackageId>
-    <Title>Modular Clean Architecture API Templates</Title>
+    <Title>Modular .NET Architecture Templates</Title>
     <Authors>OpenAI</Authors>
-    <Description>Modular dotnet new template for Clean Architecture APIs with optional Kafka and selectable SQL Server, PostgreSQL, or MongoDB persistence.</Description>
-    <PackageTags>dotnet-new;templates;clean-architecture;api;aspnetcore</PackageTags>
+    <Description>Modular dotnet new templates for Clean Architecture APIs and VSA workers.</Description>
+    <PackageTags>dotnet-new;templates;clean-architecture;vertical-slice;api;worker;aspnetcore</PackageTags>
     <TargetFramework>net8.0</TargetFramework>
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
