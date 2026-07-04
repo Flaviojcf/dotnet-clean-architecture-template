@@ -7,7 +7,7 @@
     <Authors>OpenAI</Authors>
     <Description>Modular dotnet new templates for Clean Architecture APIs and VSA workers.</Description>
     <PackageTags>dotnet-new;templates;clean-architecture;vertical-slice;api;worker;aspnetcore</PackageTags>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>

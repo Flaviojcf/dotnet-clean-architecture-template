@@ -7,7 +7,7 @@ using Company.SampleService.WebApi.Observability;
 #endif
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 #if (useSwagger)
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 #endif
 #if (useOpenTelemetry)
 using OpenTelemetry.Metrics;
