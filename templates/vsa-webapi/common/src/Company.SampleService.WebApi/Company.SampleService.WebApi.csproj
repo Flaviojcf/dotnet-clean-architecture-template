@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+#if (useSwagger)
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+#endif
+#if (useAuth)
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+#endif
+#if (useOpenTelemetry)
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Http" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" />
+#endif
+#if (useSerilog)
+    <PackageReference Include="Serilog.AspNetCore" />
+#endif
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Company.SampleService.Application\Company.SampleService.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.Docker.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DependentUpon>appsettings.json</DependentUpon>
+    </Content>
+  </ItemGroup>
+</Project>

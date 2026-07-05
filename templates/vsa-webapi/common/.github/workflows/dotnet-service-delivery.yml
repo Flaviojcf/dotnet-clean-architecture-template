@@ -1,0 +1,14 @@
+name: .NET Worker Delivery
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    tags: ['v*']
+
+jobs:
+  delivery:
+    uses: Flaviojcf/fcg-pipelines/.github/workflows/dotnet-service-delivery.yml@main
+    with:
+      service-name: company-sample-service
+      dockerfile-path: src/Company.SampleService.Worker/Dockerfile

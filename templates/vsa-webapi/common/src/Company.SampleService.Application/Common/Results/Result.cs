@@ -1,4 +1,4 @@
-namespace Company.SampleService.Domain;
+namespace Company.SampleService.Application.Common.Results;
 
 public readonly struct Result<TValue>
 {

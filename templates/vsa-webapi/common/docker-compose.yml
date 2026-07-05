@@ -1,0 +1,36 @@
+services:
+#if (useSerilog)
+  seq:
+    image: datalust/seq:latest
+    container_name: seq-company-sample-service
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5341:5341"
+      - "5342:80"
+    networks:
+      - company-sample-service-network
+
+#endif
+  company-sample-service:
+    build:
+      context: .
+      dockerfile: src/Company.SampleService.WebApi/Dockerfile
+    container_name: company-sample-service
+#if (useSerilog)
+    depends_on:
+      seq:
+        condition: service_started
+#endif
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:8080
+    ports:
+      - "8080:8080"
+    networks:
+      - company-sample-service-network
+    restart: unless-stopped
+
+networks:
+  company-sample-service-network:
+    driver: bridge

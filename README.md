@@ -6,6 +6,7 @@ Available templates:
 
 - `cleanarchapi`: Clean Architecture API solution.
 - `vsa-worker`: Vertical Slice Architecture worker.
+- `vsa-webapi`: Vertical Slice Architecture Web API with controllers, Refit, and Polly.
 
 The API template generates:
 
@@ -32,6 +33,12 @@ VSA worker:
 
 ```powershell
 dotnet new vsa-worker -n MinhaEmpresa.Notifications
+```
+
+VSA Web API:
+
+```powershell
+dotnet new vsa-webapi -n MinhaEmpresa.WebApi
 ```
 
 Options:

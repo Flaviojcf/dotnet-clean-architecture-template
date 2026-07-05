@@ -1,0 +1,176 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Flaviojcf",
+  "classifications": [
+    "Web",
+    "API",
+    "VSA",
+    "Vertical Slice Architecture",
+    "Refit",
+    "Polly"
+  ],
+  "identity": "Flaviojcf.Vsa.WebApi",
+  "name": "VSA Web API",
+  "shortName": "vsa-webapi",
+  "sourceName": "Company.SampleService",
+  "preferNameDirectory": true,
+  "symbols": {
+    "useSerilog": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include Serilog for structured logging.",
+      "defaultValue": "true"
+    },
+    "useOpenTelemetry": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include OpenTelemetry for distributed tracing and metrics.",
+      "defaultValue": "true"
+    },
+    "useSwagger": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include Swagger/OpenAPI documentation.",
+      "defaultValue": "true"
+    },
+    "useAuth": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include JWT authentication and forward the user bearer token to downstream APIs.",
+      "defaultValue": "true"
+    },
+    "useCiCd": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include GitHub Actions wrappers for the fcg-pipelines reusable CI/CD workflows.",
+      "defaultValue": "true"
+    },
+    "serviceSlug": {
+      "type": "parameter",
+      "datatype": "text",
+      "description": "Kebab-case service name used by CI/CD, container images, and Docker Compose resources.",
+      "defaultValue": "company-sample-service",
+      "replaces": "company-sample-service"
+    }
+  },
+  "sources": [
+    {
+      "source": "./common",
+      "target": "./",
+      "modifiers": [
+        {
+          "condition": "(!useCiCd)",
+          "exclude": [
+            ".github/**"
+          ]
+        }
+      ]
+    }
+  ],
+  "specialCustomOperations": {
+    "**/*.cs": {
+      "operations": [
+        {
+          "type": "conditional",
+          "configuration": {
+            "if": [ "#if" ],
+            "else": [ "#else" ],
+            "elseif": [ "#elseif" ],
+            "endif": [ "#endif" ],
+            "trim": true,
+            "wholeLine": true,
+            "evaluator": "C++"
+          }
+        }
+      ]
+    },
+    "**/*.csproj": {
+      "operations": [
+        {
+          "type": "conditional",
+          "configuration": {
+            "if": [ "#if" ],
+            "else": [ "#else" ],
+            "elseif": [ "#elseif" ],
+            "endif": [ "#endif" ],
+            "trim": true,
+            "wholeLine": true,
+            "evaluator": "C++"
+          }
+        }
+      ]
+    },
+    "**/*.props": {
+      "operations": [
+        {
+          "type": "conditional",
+          "configuration": {
+            "if": [ "#if" ],
+            "else": [ "#else" ],
+            "elseif": [ "#elseif" ],
+            "endif": [ "#endif" ],
+            "trim": true,
+            "wholeLine": true,
+            "evaluator": "C++"
+          }
+        }
+      ]
+    },
+    "**/*.yml": {
+      "operations": [
+        {
+          "type": "conditional",
+          "configuration": {
+            "if": [ "#if" ],
+            "else": [ "#else" ],
+            "elseif": [ "#elseif" ],
+            "endif": [ "#endif" ],
+            "trim": true,
+            "wholeLine": true,
+            "evaluator": "C++"
+          }
+        }
+      ]
+    },
+    "**/*.json": {
+      "operations": [
+        {
+          "type": "conditional",
+          "configuration": {
+            "if": [ "#if" ],
+            "else": [ "#else" ],
+            "elseif": [ "#elseif" ],
+            "endif": [ "#endif" ],
+            "trim": true,
+            "wholeLine": true,
+            "evaluator": "C++"
+          }
+        }
+      ]
+    },
+    "**/*.slnx": {
+      "operations": [
+        {
+          "type": "conditional",
+          "configuration": {
+            "if": [ "#if" ],
+            "else": [ "#else" ],
+            "elseif": [ "#elseif" ],
+            "endif": [ "#endif" ],
+            "trim": true,
+            "wholeLine": true,
+            "evaluator": "C++"
+          }
+        }
+      ]
+    }
+  },
+  "primaryOutputs": [
+    {
+      "path": "Company.SampleService.slnx"
+    },
+    {
+      "path": "src/Company.SampleService.WebApi/Company.SampleService.WebApi.csproj"
+    }
+  ]
+}

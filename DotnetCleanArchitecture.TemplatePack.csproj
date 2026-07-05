@@ -5,8 +5,8 @@
     <PackageId>DotnetCleanArchitecture.TemplatePack</PackageId>
     <Title>Modular .NET Architecture Templates</Title>
     <Authors>OpenAI</Authors>
-    <Description>Modular dotnet new templates for Clean Architecture APIs and VSA workers.</Description>
-    <PackageTags>dotnet-new;templates;clean-architecture;vertical-slice;api;worker;aspnetcore</PackageTags>
+    <Description>Modular dotnet new templates for Clean Architecture APIs, VSA workers, and VSA Web APIs.</Description>
+    <PackageTags>dotnet-new;templates;clean-architecture;vertical-slice;api;worker;webapi;aspnetcore</PackageTags>
     <TargetFramework>net10.0</TargetFramework>
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
