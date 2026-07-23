@@ -64,7 +64,7 @@
 
     <!-- Infrastructure.MongoDb -->
 #if (useMongoDB)
-    <PackageVersion Include="MongoDB.Driver" Version="2.30.0" />
+    <PackageVersion Include="MongoDB.Driver" Version="3.10.0" />
 #endif
 
     <!-- Infrastructure.Kafka -->
